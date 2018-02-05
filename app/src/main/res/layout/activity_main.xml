@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:drawable/screen_background_dark"
+    android:backgroundTint="@android:color/holo_red_dark"
+    tools:context="com.example.yessh.pomodoro.MainActivity">
+
+    <TextView
+        android:id="@+id/countdown_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/task"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50px"
+        android:text="25:00"
+        android:textColor="@android:color/background_light"
+        android:textSize="@dimen/size_task" />
+
+    <TextView
+        android:id="@+id/task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="40px"
+        android:text="Fulfill your Task"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/size_countdown_text" />
+
+    <Button
+        android:id="@+id/countdown_button"
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/holo_green_dark"
+        android:paddingLeft="@dimen/distancia_boton"
+        android:paddingRight="@dimen/distancia_boton"
+        android:text="START"
+        android:textColor="@android:color/background_light" />
+
+</RelativeLayout>

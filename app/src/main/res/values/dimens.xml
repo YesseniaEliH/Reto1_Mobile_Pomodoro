@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_countdown_text">40sp</dimen>
+    <dimen name="size_task">70sp</dimen>
+    <dimen name="distancia_boton">5sp</dimen>
+</resources>

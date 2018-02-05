@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private Button countdownShort;
 
     private CountDownTimer countDownTimer;
-    private long timeLeftInMiliSeconds = 1500000; //25min
+    private long timeLeftInMiliSeconds = 1500000; //25min;
 
     private boolean timerRunning;
+    private int countBreaks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void startTimer(){
+        timeLeftInMiliSeconds = 1500000; //25min
 
         countDownTimer = new CountDownTimer(timeLeftInMiliSeconds,1000) {
             @Override
@@ -80,8 +82,11 @@ public class MainActivity extends AppCompatActivity {
                         TextView task = (TextView) findViewById(R.id.task);
                         task.setText("BREAK");
                         countdownShort.setText("STOP");
-                        timeLeftInMiliSeconds = 50000;
-                        startTimer();
+                        if (countBreaks<=4) {
+                            breakTimer(50000);
+                        }else{
+                            breakTimer(100000);
+                        }
 
                     }
                 });
@@ -108,6 +113,42 @@ public class MainActivity extends AppCompatActivity {
 
         countdownText.setText(timeLeftText);
     }
+    public void breakTimer(long seconds){
+        timeLeftInMiliSeconds = seconds;
+        countDownTimer = new CountDownTimer(timeLeftInMiliSeconds,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMiliSeconds = l;
+                updateTimer();
+                countdownButton.setEnabled(false);
+            }
 
+            @Override
+            public void onFinish() {
+
+                countdownText.setText("0:00");
+                countdownButton.setEnabled(true);
+                countdownButton.setText("START POMODORO");
+                mp = MediaPlayer.create(MainActivity.this,R.raw.guitar);
+                mp.start();
+                countdownShort =(Button)findViewById(R.id.countdown_button);
+                countdownShort.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Intent countdownShort = new Intent(MainActivity.this, ShortBreak.class);
+                        //startActivity(countdownShort);
+                        mp.stop();
+                        TextView task = (TextView) findViewById(R.id.task);
+                        task.setText("FulFill your Task");
+                        countdownShort.setText("STOP");
+                        startTimer();
+                    }
+                });
+            }
+        }.start();
+        countdownButton.setText("PAUSE");
+        countBreaks ++;
+        timerRunning = true;
+    }
 
 }

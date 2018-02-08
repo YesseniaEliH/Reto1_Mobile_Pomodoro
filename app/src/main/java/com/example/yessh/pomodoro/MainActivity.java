@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,8 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,11 +29,16 @@ public class MainActivity extends AppCompatActivity {
     private Button countdownButton;
     private Button countdownShort;
 
+
     private CountDownTimer countDownTimer;
     private long timeLeftInMiliSeconds = 1500000; //25min;
 
     private boolean timerRunning;
-    private int countBreaks = 0;
+    private int countPomodoro = 0;
+
+    private RingProgressBar ringProgressBar;
+    private int pomProgressStatus = 0;
+    private Handler pomHandler ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         });
         updateTimer();
     }
-    public void starStop(){
+    /* public void starStop(){
         if(timerRunning){
             stopTimer();
         }else {
             startTimer();
         }
-    }
+    }*/
     public void startTimer(){
         timeLeftInMiliSeconds = 1500000; //25min
 
@@ -60,8 +70,40 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTick(long l) {
                 timeLeftInMiliSeconds = l;
+                ringProgressBar = (RingProgressBar) findViewById(R.id.ringProgressBar);
                 updateTimer();
                 countdownButton.setEnabled(false);
+                pomHandler = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg){
+                        if (msg.what == 0){
+                            if (pomProgressStatus<1500){
+                                pomProgressStatus++;
+                                ringProgressBar.setProgress(pomProgressStatus);
+                            }
+                        }
+                    }
+                };
+                ringProgressBar.setOnProgressListener(new RingProgressBar.OnProgressListener() {
+                    @Override
+                    public void progressToComplete() {
+                        pomProgressStatus = 0;
+                    }
+                });
+
+                new  Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                            try {
+                                Thread.sleep(1000);
+                                pomHandler.sendEmptyMessage(0);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
+
+                        }
+                }).start();
             }
 
             @Override
@@ -69,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
                 countdownText.setText("0:00");
                 countdownButton.setEnabled(true);
-                countdownButton.setText("START SHORT BREAK");
+                countdownButton.setText("Start Short Break");
                 mp = MediaPlayer.create(MainActivity.this,R.raw.minuet_bach);
                 mp.start();
                 countdownShort =(Button)findViewById(R.id.countdown_button);
@@ -80,24 +122,24 @@ public class MainActivity extends AppCompatActivity {
                         //startActivity(countdownShort);
                         mp.stop();
                         TextView task = (TextView) findViewById(R.id.task);
-                        task.setText("BREAK");
-                        countdownShort.setText("STOP");
-                        if (countBreaks<=4) {
-                            breakTimer(50000);
+                        task.setText("Break");
+                        countdownShort.setText("Stop");
+                        if (countPomodoro<=4) {
+                            breakTimer(300000);
                         }else{
-                            breakTimer(100000);
+                            breakTimer(600000);
                         }
 
                     }
                 });
             }
         }.start();
-        countdownButton.setText("PAUSE");
+        countdownButton.setText("Pause");
         timerRunning = true;
     }
     public void stopTimer(){
         countDownTimer.cancel();
-        countdownButton.setText("STOP");
+        countdownButton.setText("Stop");
         timerRunning = false;
     }
     public void updateTimer(){
@@ -128,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
                 countdownText.setText("0:00");
                 countdownButton.setEnabled(true);
-                countdownButton.setText("START POMODORO");
+                countdownButton.setText("Start Pomodoro");
                 mp = MediaPlayer.create(MainActivity.this,R.raw.guitar);
                 mp.start();
                 countdownShort =(Button)findViewById(R.id.countdown_button);
@@ -140,14 +182,14 @@ public class MainActivity extends AppCompatActivity {
                         mp.stop();
                         TextView task = (TextView) findViewById(R.id.task);
                         task.setText("FulFill your Task");
-                        countdownShort.setText("STOP");
+                        countdownShort.setText("Stop");
                         startTimer();
                     }
                 });
             }
         }.start();
-        countdownButton.setText("PAUSE");
-        countBreaks ++;
+        countdownButton.setText("Pause");
+        countPomodoro ++;
         timerRunning = true;
     }
 

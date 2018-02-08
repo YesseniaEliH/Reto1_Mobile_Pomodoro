@@ -8,39 +8,62 @@
     android:backgroundTint="@android:color/holo_red_dark"
     tools:context="com.example.yessh.pomodoro.MainActivity">
 
+    <io.netopen.hotbitmapgg.library.view.RingProgressBar
+        android:id="@+id/ringProgressBar"
+        android:layout_width="210sp"
+        android:layout_height="210sp"
+        android:layout_above="@+id/task"
+        android:layout_marginBottom="25dp"
+        android:layout_centerHorizontal="true"
+        app:max="1500"
+        app:ringColor="@android:color/holo_green_dark"
+        app:ringProgressColor="@android:color/holo_green_dark"
+        app:ringWidth="3dp"
+        app:style="FILL"
+        app:textColor="@color/colorPrimary"
+        app:textIsShow="true"
+        app:textSize="16sp" />
+
     <TextView
         android:id="@+id/countdown_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/task"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50px"
+        android:layout_marginBottom="80dp"
         android:text="25:00"
         android:textColor="@android:color/background_light"
         android:textSize="@dimen/size_task" />
+
 
     <TextView
         android:id="@+id/task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="40px"
+        android:layout_alignEnd="@+id/ringProgressBar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/ringProgressBar"
+        android:layout_marginBottom="200dp"
         android:text="Fulfill your Task"
         android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/size_countdown_text" />
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/countdown_button"
-        style="@style/Base.TextAppearance.AppCompat.Widget.Button"
+        style="@style/Base.TextAppearance.AppCompat.SearchResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/task"
+        android:layout_below="@+id/ringProgressBar"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
         android:background="@android:color/holo_green_dark"
+        android:ems="8"
         android:paddingLeft="@dimen/distancia_boton"
         android:paddingRight="@dimen/distancia_boton"
-        android:text="START"
-        android:textColor="@android:color/background_light" />
+        android:text="Start Pomodoro"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
+        android:textSize="25sp" />
 
 </RelativeLayout>

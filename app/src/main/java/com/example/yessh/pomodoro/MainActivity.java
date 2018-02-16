@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         TextView task = (TextView) findViewById(R.id.task);
                         task.setText("FulFill your Task");
                         countdownShort.setText("Stop");
+                        pomProgressStatus = 0;
                         startTimer();
                     }
                 });
